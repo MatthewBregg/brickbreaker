@@ -290,21 +290,21 @@ void brickCollide(std::vector<brick>* bricks, ball* b)
 			
 		if ( b->x >= bricks->at(j).x  && (unsigned)b->x <= bricks->at(j).x + bricks->at(j).out.size())
 		{
-			if (b->y == bricks->at(j).y  && b->up)
+			if (b->y == bricks->at(j).y+1  && b->up)
 			{
 				b->up = false;
-				if ( (b->x == bricks->at(j).x && b->forward) || ((unsigned)b->x == bricks->at(j).x + bricks->at(j).out.size() && !b->forward))
+				if ( (b->x == bricks->at(j).x-1 && b->forward) || ((unsigned)b->x == bricks->at(j).x + bricks->at(j).out.size()+1 && !b->forward))
 				{
 					b->up = !b->up;
 					b->forward = !b->forward;
 				}
 				colision = true;
 			}
-			else if (b->y == bricks->at(j).y && !b->up)
+			else if (b->y == bricks->at(j).y-1 && !b->up)
 			{
 				b->up = true;
 
-				if ( (b->x == bricks->at(j).x && b->forward) || ((unsigned)b->x == bricks->at(j).x + bricks->at(j).out.size() && !b->forward))
+				if ( (b->x == bricks->at(j).x-1 && b->forward) || ((unsigned)b->x == bricks->at(j).x + bricks->at(j).out.size()+1 && !b->forward))
 				{
 					b->up = !b->up;
 					b->forward = !b->forward;
@@ -315,6 +315,7 @@ void brickCollide(std::vector<brick>* bricks, ball* b)
 			}
 
 		}
+
 		if (colision)
 		{
 			bricks->at(j) = bricks->at(bricks->size()-1);
