@@ -154,13 +154,17 @@ void moveBall(ball* m)
 void drawPlat(PLAT* p)
 {
 
-	char *temp = new char[p->out.size()];
+
+
 		for (unsigned int i = 0; i < p->out.size(); ++i)
 		{
 
-			temp[i] = p->out[i];
+
+		mvaddch(p->y, p->x+i, p->out[i]);
 		}
-		mvprintw(p->y, p->x, temp );
+
+
+
 
 }
 bool movePlat(PLAT* p, int ch)
@@ -174,7 +178,7 @@ bool movePlat(PLAT* p, int ch)
             
 			return true;
         }
-        if (ch == KEY_RIGHT && p->x < maxX-p->out.size())
+        if (ch == KEY_RIGHT && (unsigned)p->x < maxX-p->out.size())
         {
 
             p->x++;
@@ -194,12 +198,12 @@ void resetBall(ball* m)
 }
 void platBallCheck(ball* b, PLAT* p)
 {
-	if ( b->y == p-> y && b->x >= p->x && b->x <= p->x+p->out.size()/2)
+	if ( b->y == p-> y && b->x >= p->x && (unsigned)b->x <= p->x+p->out.size()/2)
 	{
 		b->up = true;
 		b->forward = false;
 	}
-	if ( b->y == p-> y && b->x >= p->x+p->out.size()/2 && b->x <= p->x+p->out.size())
+	if ( b->y == p-> y && (unsigned)b->x >= p->x+p->out.size()/2 && (unsigned)b->x <= p->x+p->out.size())
 	{
 		b->up = true;
 		b ->forward = true;
@@ -241,13 +245,18 @@ void drawBricks(std::vector<brick>* bricks)
 	for (unsigned int j = 0; j < bricks->size(); ++j)
 	{
 
-		char *temp = new char[bricks->at(j).out.size()];
+		// char *temp = new char[bricks->at(j).out.size()];
+		// for (unsigned int i = 0; i < bricks->at(j).out.size(); ++i)
+		// {
+
+		// 	temp[i] = bricks->at(j).out[i];
+		// }
+		// mvprintw(bricks->at(j).y, bricks->at(j).x, temp );
+		// delete[] temp;
 		for (unsigned int i = 0; i < bricks->at(j).out.size(); ++i)
 		{
-
-			temp[i] = bricks->at(j).out[i];
+			mvaddch(bricks->at(j).y, bricks->at(j).x+i, bricks->at(j).out[i]);
 		}
-		mvprintw(bricks->at(j).y, bricks->at(j).x, temp );
 		
 	}
 
@@ -279,13 +288,14 @@ void brickCollide(std::vector<brick>* bricks, ball* b)
 
 		// }
 			
-		if ( b->x >= bricks->at(j).x  && b->x <= bricks->at(j).x + bricks->at(j).out.size())
+		if ( b->x >= bricks->at(j).x  && (unsigned)b->x <= bricks->at(j).x + bricks->at(j).out.size())
 		{
 			if (b->y == bricks->at(j).y  && b->up)
 			{
 				b->up = false;
-				if ( b->x == bricks->at(j).x || b->x == bricks->at(j).x + bricks->at(j).out.size())
+				if ( (b->x == bricks->at(j).x && b->forward) || ((unsigned)b->x == bricks->at(j).x + bricks->at(j).out.size() && !b->forward))
 				{
+					b->up = !b->up;
 					b->forward = !b->forward;
 				}
 				colision = true;
@@ -294,8 +304,9 @@ void brickCollide(std::vector<brick>* bricks, ball* b)
 			{
 				b->up = true;
 
-				if ( b->x == bricks->at(j).x || b->x == bricks->at(j).x + bricks->at(j).out.size())
+				if ( (b->x == bricks->at(j).x && b->forward) || ((unsigned)b->x == bricks->at(j).x + bricks->at(j).out.size() && !b->forward))
 				{
+					b->up = !b->up;
 					b->forward = !b->forward;
 				}
 
