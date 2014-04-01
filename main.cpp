@@ -327,11 +327,11 @@ void brickCollide(std::vector<brick>* bricks, ball* b)
 
 		// }
 			
-		if ( b->x >= bricks->at(j).x  && (unsigned)b->x <= bricks->at(j).x + bricks->at(j).out.size())
+		if ( b->x >= bricks->at(j).x  && (unsigned)b->x <= bricks->at(j).x + bricks->at(j).out.size() && !colision)
 		{
 			if (b->y == bricks->at(j).y+1  && b->up )
 			{
-				if ( !(b->x == bricks->at(j).x && !b->forward) || !((unsigned)b->x == bricks->at(j).x+bricks->at(j).out.size() && b->forward) )
+				if ( !((b->x == bricks->at(j).x && !b->forward) || ((unsigned)b->x == bricks->at(j).x+bricks->at(j).out.size() && b->forward)) )
 				{
 				b->up = !b->up;
 				colision = true;
@@ -340,7 +340,7 @@ void brickCollide(std::vector<brick>* bricks, ball* b)
 			if (b->y == bricks->at(j).y-1 && !b->up)
 			{
 
-				if ( !(b->x == bricks->at(j).x && !b->forward) || !((unsigned)b->x == bricks->at(j).x+bricks->at(j).out.size() && b->forward) )
+				if ( !((b->x == bricks->at(j).x && !b->forward) || ((unsigned)b->x == bricks->at(j).x+bricks->at(j).out.size() && b->forward)) )
 				{
 				b->up = !b->up;
 
@@ -348,7 +348,7 @@ void brickCollide(std::vector<brick>* bricks, ball* b)
 				}
 			}
 		}
-		if (b->y == bricks->at(j).y)
+		if (b->y == bricks->at(j).y && !colision)
 		{
 			if ( (b->x == bricks->at(j).x-1 && b->forward) || ((unsigned)b->x == bricks->at(j).x + bricks->at(j).out.size()+1 && !b->forward))
 			{
@@ -394,7 +394,7 @@ void brickCollide(std::vector<brick>* bricks, ball* b)
 		// }
 		//Rather than checking if a ball is approaching diagonally, check if the ball has entered, and then do the same behavior.
 		//Should make collision detection more accurate
-		if (b->y == bricks->at(j).y && ( b->x == bricks->at(j).x || (unsigned)b->x == bricks->at(j).x+bricks->at(j).out.size()))
+		if (b->y == bricks->at(j).y && ( (b->x == bricks->at(j).x && b->forward) || ((unsigned)b->x == bricks->at(j).x+bricks->at(j).out.size() && !b->forward )) && !colision)
 		{
 			b->up = !b->up;
 			b->forward = !b->forward;
