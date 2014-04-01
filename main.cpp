@@ -225,6 +225,11 @@ void platBallCheck(ball* b, PLAT* p)
 }
 void genBricks(std::vector<brick>* bricks)
 {
+	while (!bricks->empty())
+	{
+		bricks->pop_back();
+
+	}
 	int color = 2;
 	srand(time(NULL));
 	int y = brickRows; //There will be 5 rows of bricks
@@ -451,6 +456,108 @@ void smoothBall(ball* BALL, PLAT* p, std::vector <brick>* bricks)
 	platBallCheck(BALL, p);
 	}
 }
+
+bool gameOver()
+{
+
+	
+	int A = 7;	
+	start_color();
+	init_pair(7, 1, 0);
+	init_pair(8, 0, 1);
+
+	
+
+
+	int ch;
+	while(1)
+	{
+
+	attron(COLOR_PAIR(A));
+	mvprintw(maxY/2,maxX/2-15, "GAME OVER - HIT N TO RESTART");	
+	attroff(COLOR_PAIR(A));
+	refresh();
+	usleep(100000);
+	if ( A == 7 )
+	{
+		A = 8;
+	}
+	else
+	{
+		A = 7;
+	}
+
+	timeout(25); 
+
+	ch = getch();
+	
+	if ( ch != ERR  && ch == 'N')
+	{
+			
+		
+		return false;
+	
+	
+	}
+	if ( ch != ERR && ch == 'Q')
+	{
+		return true;
+	}
+	}
+
+	
+}
+
+bool winner()
+{
+
+	
+	int A = 7;	
+	start_color();
+	init_pair(7, 1, 0);
+	init_pair(8, 0, 1);
+
+	
+
+
+	int ch;
+	while(1)
+	{
+
+	attron(COLOR_PAIR(A));
+	mvprintw(maxY/2,maxX/2-15, "GAME WON - HIT N TO RESTART");	
+	attroff(COLOR_PAIR(A));
+	refresh();
+	usleep(100000);
+	if ( A == 7 )
+	{
+		A = 8;
+	}
+	else
+	{
+		A = 7;
+	}
+
+	timeout(25); 
+
+	ch = getch();
+	
+	if ( ch != ERR  && ch == 'N')
+	{
+			
+		
+		return true;
+	
+	
+	}
+	if ( ch != ERR && ch == 'Q')
+	{
+		return false;
+	}
+	}
+
+	
+}
 int main()
 {
 
@@ -488,7 +595,37 @@ int main()
 
 		makeBorder();
 		drawBricks(&bricks);
-		
+		//Check lose condition
+		if  ( lives < 1 )
+		{
+			if (gameOver())
+			{
+				break;
+			}
+			else
+			{
+				lives = 3;
+				resetBall(&BALL);
+				genBricks(&bricks);
+			}
+		}
+		//Check win condition
+		if ( bricks.empty() )
+		{
+			if (winner())
+			{
+				//For now, this simply resets the board. Eventually I will add levels. 
+				lives += 1;
+				resetBall(&BALL);
+				genBricks(&bricks);
+
+			}
+			else
+			{
+
+			}
+		}
+
 		if (ballOut(&BALL))
 		{
 			mvaddch(BALL.y, BALL.x, BALL.out);
