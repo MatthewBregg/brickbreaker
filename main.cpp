@@ -13,8 +13,10 @@ int brickRows = 5;
 int maxX = 80;
 int maxY = 40;
 int ballSpeed = 125;
+int score = 0;
 
-//Compile command: g++ -std=gnu++11 -O2 -Wall -o main main.cpp -lncurses -pthread
+
+
 struct PLAT{
 	int x;
 	int y;
@@ -403,7 +405,32 @@ void brickCollide(std::vector<brick>* bricks, ball* b)
 	}
 
 }
+int ai(ball* b, PLAT* p)
+{
+	int x = p->x + p->out.size()/2;
+	usleep(ballSpeed * 700);
+	if ( x > b->x)
+	{
+		return KEY_LEFT;;
+	}
+	else if (  x < b->x)
+	{
+		return KEY_RIGHT;
+	}
+	else
+	{
+		if (rand()%1)
+		{
+			return KEY_RIGHT;
+		}
+		else
+		{
+			return KEY_LEFT;
+		}
+	}
+	
 
+}
 void smoothBall(ball* BALL, PLAT* p, std::vector <brick>* bricks)
 {
 	while(true)
@@ -430,6 +457,9 @@ int main()
     noecho(); 
 	start_color();
 	int lives = 3;
+	bool AI = false;
+
+
 	std::vector <brick> bricks;
 	genBricks(&bricks);
 	std::thread t1(smoothBall,&BALL,&p, &bricks);
@@ -441,7 +471,11 @@ int main()
 
 		
 		drawPlat(&p);
-        mvprintw(0, 81, " x is %d, y is %d, LIVES:%d", BALL.x, BALL.y, lives); 
+        mvprintw(0, 81, " x is %d, y is %d", BALL.x, BALL.y); 
+		mvprintw(1,81, "LIVES: %d, SCORE %d", lives, score);
+		mvprintw(2,81, "Use the arrow keys to move the platform.");
+		mvprintw(3,81, "Hit Q to quit. Hit B to let the ai take over");	
+
 	    //mvprintw(BALL.y, BALL.x, "%c", BALL.out ); 
 
 		makeBorder();
@@ -465,7 +499,7 @@ int main()
 		
 		ch = getch();
 	
-		if ( ch != ERR )
+		if ( ch != ERR  && ch != 'B')
 		{
 
     		movePlat(&p, ch);
@@ -473,6 +507,25 @@ int main()
 			//usleep(125000);
 	
 		}
+		if ( ch == 'B')
+		{
+			AI = !AI;
+		}
+		if(AI)
+		{
+		mvprintw(4, 81, "AI activated");
+		movePlat(&p, ai(&BALL, &p));	
+		}
+
+		if (ch == 'Q')
+		{
+			break;
+
+		}
+
+
+
+		
 		
 //		moveBall(&BALL);
 
