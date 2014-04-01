@@ -22,7 +22,7 @@ struct PLAT{
 	PLAT(){
 		x = maxX/2;
 		y = maxY-4;
-		out = "<--===========================================================---->";
+		out = "<------>";
 	}
 };
 struct ball{
@@ -44,6 +44,8 @@ struct ball{
 };
 struct brick{
 	int x;
+	int color;
+
 	int y;
 	int length;
 	std::string out;
@@ -54,24 +56,33 @@ struct brick{
 			y = 0;
 			length = 0;
 			out = "";
+			color= 0;	
+			
 
 		}
-	brick(int xx, int yy, int l )
+	brick(int xx, int yy, int l, int B )
 		{
-			out = "[";	
-		
+
+
+			
+
+			out = "";	
+
+			color = B;
 			x = xx;
 			y = yy;
 			length = l;
-			 for (int i = 0; i < l-2; ++i)
+			 for (int i = 0; i < l; ++i)
 			 {
-			 	out += "=";	
+			 	out += "+";	
 			
 			 }
-			 out+="]";
+
 			
 		}
 };
+
+
 void makeBorder()
 {
 	for (int i = 0; i < maxX; ++i)
@@ -212,6 +223,7 @@ void platBallCheck(ball* b, PLAT* p)
 }
 void genBricks(std::vector<brick>* bricks)
 {
+	int color = 2;
 	srand(time(NULL));
 	int y = brickRows; //There will be 5 rows of bricks
 	for (int i = 1; i <= y; ++i)
@@ -219,11 +231,20 @@ void genBricks(std::vector<brick>* bricks)
 		int j = 1;
 		while ( j < maxX-1)
 		{
+
+			if ( color >= 6 )
+			{
+				color = 1;
+			}
+			else
+			{
+				color++;
+			}
 			int temp;
 			if (  maxX - j -1 <= 3 )
 			{
 					temp = maxX - j;		
-					bricks->push_back(brick(j,i,temp));
+					bricks->push_back(brick(j,i,temp, color));
 					j += temp+2;
 					break;
 
@@ -233,17 +254,30 @@ void genBricks(std::vector<brick>* bricks)
 
 				temp = rand() % 3 + 2;
 			}
-			bricks->push_back(brick(j,i,temp));
+			bricks->push_back(brick(j,i,temp, color));
 			j += temp;
-
 		}
 	}
 
 }
 void drawBricks(std::vector<brick>* bricks)
 {
+
+
+	init_pair(0, COLOR_WHITE, COLOR_BLACK);
+	init_pair(1, COLOR_RED, 2);
+	init_pair(2, COLOR_RED, 3);
+	init_pair(3, COLOR_RED, 4);
+	init_pair(4, COLOR_RED, 5);
+	init_pair(5, COLOR_RED, 6);
+	init_pair(6, COLOR_RED, 7);
 	for (unsigned int j = 0; j < bricks->size(); ++j)
 	{
+
+
+	
+
+		attron(COLOR_PAIR(bricks->at(j).color));
 
 		// char *temp = new char[bricks->at(j).out.size()];
 		// for (unsigned int i = 0; i < bricks->at(j).out.size(); ++i)
@@ -257,6 +291,9 @@ void drawBricks(std::vector<brick>* bricks)
 		{
 			mvaddch(bricks->at(j).y, bricks->at(j).x+i, bricks->at(j).out[i]);
 		}
+		attroff(COLOR_PAIR(bricks->at(j).color));
+
+
 		
 	}
 
@@ -391,7 +428,7 @@ int main()
     curs_set(0);
     keypad(stdscr, TRUE);     
     noecho(); 
-
+	start_color();
 	int lives = 3;
 	std::vector <brick> bricks;
 	genBricks(&bricks);
