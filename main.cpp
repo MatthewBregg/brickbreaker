@@ -20,7 +20,7 @@ int eVol = 100;
 int brickRows = 5;
 int maxX = 80;
 int maxY = 40;
-int ballSpeed = 125;
+int ballSpeed = 200;
 int score = 0;
 
 
@@ -261,6 +261,7 @@ void resetBall(ball* m)
 	m->out = 'O';
 	m-> forward =true;
 	m->up = false;
+	ballSpeed = 200;
 
 }
 void platBallCheck(ball* b, PLAT* p)
@@ -273,7 +274,10 @@ void platBallCheck(ball* b, PLAT* p)
 			if (!effects.empty())
 			{
 				//Set the modulus to be the number of breaking sounds. 
-			ballSpeed += log(ballSpeed);	
+				if ( ballSpeed > 50 )
+				{
+					ballSpeed -= log(ballSpeed);	
+				}
 			sf::Sound collide;
 			collide.SetBuffer(effects[2]);
 			collide.SetVolume(eVol);
@@ -290,7 +294,11 @@ void platBallCheck(ball* b, PLAT* p)
 			{
 				//Set the modulus to be the number of breaking sounds. 
 			
-			ballSpeed += log(ballSpeed);	
+				if ( ballSpeed > 50 )
+				{
+					ballSpeed -= log(ballSpeed);	
+				}
+
 			sf::Sound collide;
 			collide.SetBuffer(effects[2]);
 			collide.SetVolume(eVol);
@@ -865,7 +873,7 @@ int main()
 
 		}
 	
-		if ( ch != ERR  && ch != 'B')
+		if ( ch != ERR  && ch != 'B' && !AI)
 		{
 
     		movePlat(&p, ch);
