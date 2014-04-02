@@ -773,7 +773,7 @@ int main()
 
 		drawPlat(&p);
         mvprintw(0, 81, " x is %d, y is %d", BALL.x, BALL.y); 
-		mvprintw(1,81, "LIVES: %d, SCORE %d", lives, score);
+		mvprintw(1,81, "LIVES: %d, SCORE %d, Speed : %d", lives, score, ballSpeed);
 		mvprintw(2,81, "Use the arrow keys to move the platform.");
 		mvprintw(3,81, "Hit Q to quit. Hit B to let the ai take over");	
 		mvprintw(4, 81, "Hit M to Mute the Music, = and - to change volume. Volume is : %d" , mVol);
