@@ -1,0 +1,5 @@
+sounds 1 and 2 are brick destruction noises. 
+3 is the wall/plat collision.
+4 is the game over sound
+5 is the ball lost
+sound6 is the win sound.

@@ -9,6 +9,13 @@
 #include <vector>
 #include <cstdlib>
 #include <time.h>
+#include <string>
+//#include <SDL/SDL_mixer.h>
+#include <SFML/Audio.hpp>
+//http://www.sfml-dev.org/tutorials/2.1/audio-sounds.php
+//Initialize the sound effect buffers to avoid having to make an extra parameter to for each function.
+std::vector <sf::SoundBuffer> effects;
+int eVol = 100;
 int brickRows = 5;
 int maxX = 80;
 int maxY = 40;
@@ -84,7 +91,19 @@ struct brick{
 		}
 };
 
+void loadEffects()
+{
+	for (int i = 1; i <= 6; ++i)
+	{
+		sf::SoundBuffer A;
+		if (A.LoadFromFile("Sound/sound"+std::to_string(i)+".wav"))
+		{
+			effects.push_back(A);
+		}
+	}
 
+
+}	
 void makeBorder()
 {
 	for (int i = 0; i < maxX; ++i)
@@ -119,14 +138,47 @@ void ballBoundCheck(ball* m)
 	if ( m-> x <= 1 )
 	{
 		m->forward = true;
+
+			if (!effects.empty())
+			{
+				//Set the modulus to be the number of breaking sounds. 
+			
+			sf::Sound collide;
+			collide.SetBuffer(effects[2]);
+			collide.SetVolume(eVol);
+			collide.Play();
+			usleep(50000);
+			}
 	}
 	if ( m-> x >= maxX-1)
 	{
 		m->forward = false;
+
+			if (!effects.empty())
+			{
+				//Set the modulus to be the number of breaking sounds. 
+			
+			sf::Sound collide;
+			collide.SetBuffer(effects[2]);
+			collide.SetVolume(eVol);
+			collide.Play();
+			usleep(50000);
+			}
 	}
 	if ( m->y <= 1)
 	{
 		m->up = false;
+
+			if (!effects.empty())
+			{
+				//Set the modulus to be the number of breaking sounds. 
+			
+			sf::Sound collide;
+			collide.SetBuffer(effects[2]);
+			collide.SetVolume(eVol);
+			collide.Play();
+			usleep(50000);
+			}
 	}
 		
 
@@ -140,6 +192,7 @@ bool ballOut(ball* m)
 	if ( m->y >= maxY-1 )
 	{
 		m->out = '*';
+
 		return true;
 	}
 	return false;
@@ -215,11 +268,33 @@ void platBallCheck(ball* b, PLAT* p)
 	{
 		b->up = true;
 		b->forward = false;
+
+			if (!effects.empty())
+			{
+				//Set the modulus to be the number of breaking sounds. 
+			
+			sf::Sound collide;
+			collide.SetBuffer(effects[2]);
+			collide.SetVolume(eVol);
+			collide.Play();
+			usleep(50000);
+			}
 	}
 	if ( b->y == p-> y && (unsigned)b->x >= p->x+p->out.size()/2 && (unsigned)b->x <= p->x+p->out.size())
 	{
 		b->up = true;
 		b ->forward = true;
+
+			if (!effects.empty())
+			{
+				//Set the modulus to be the number of breaking sounds. 
+			
+			sf::Sound collide;
+			collide.SetBuffer(effects[2]);
+			collide.SetVolume(eVol);
+			collide.Play();
+			usleep(50000);
+			}
 	}
 
 }
@@ -409,6 +484,18 @@ void brickCollide(std::vector<brick>* bricks, ball* b)
 
 		if (colision)
 		{
+
+			if (!effects.empty())
+			{
+				//Set the modulus to be the number of breaking sounds. 
+			int temp = rand()%2;
+			sf::Sound collide;
+			collide.SetBuffer(effects[temp]);
+			collide.SetVolume(eVol);
+			collide.Play();
+			usleep(50000);
+			}
+			
 			bricks->at(j) = bricks->at(bricks->size()-1);
 			bricks->pop_back();
 
@@ -465,7 +552,18 @@ bool gameOver()
 	start_color();
 	init_pair(7, 1, 0);
 	init_pair(8, 0, 1);
-
+sf::Sound gameOver;
+	if (!effects.empty())
+	{
+		
+			
+		
+		gameOver.SetBuffer(effects[3]);
+		gameOver.SetVolume(eVol);
+		gameOver.Play();
+		gameOver.SetLoop(true);
+			
+	}
 	
 
 
@@ -507,6 +605,66 @@ bool gameOver()
 
 	
 }
+void changeVol(int* mVol, int ch, sf::Music* BGM)
+{
+
+	if ( (ch == 'M' || ch == '=' || ch == '-'))
+		{
+			if ( ch == 'M' )
+			{
+				if ( *mVol == 0 )
+				{
+					BGM->SetVolume(50);
+					*mVol = 50;
+				}
+				else
+				{
+					BGM->SetVolume(0);
+					*mVol = 0;
+				}
+			}
+			if ( ch == '=' && *mVol <= 99)
+			{
+				++*mVol;
+				BGM->SetVolume(*mVol);
+			}
+
+			if ( ch == '-' && *mVol > 0)
+			{
+				--*mVol;
+				BGM->SetVolume(*mVol);
+			}
+
+		}
+
+	if ( (ch == 'm' || ch == '+' || ch == '_'))
+		{
+			if ( ch == 'm' )
+			{
+				if ( eVol == 0 )
+				{
+					
+					eVol = 100;	
+				}
+				else
+				{
+
+					eVol = 0;	
+				}
+			}
+			if ( ch == '+' && eVol <= 99)
+			{
+				++eVol;
+
+			}
+
+			if ( ch == '_' && eVol > 0)
+			{
+				--eVol;
+			}
+
+		}
+}
 
 bool winner()
 {
@@ -518,6 +676,18 @@ bool winner()
 	init_pair(8, 0, 1);
 
 	
+sf::Sound winSound;
+	if (!effects.empty())
+	{
+		
+			
+		
+		winSound.SetBuffer(effects[5]);
+		winSound.SetVolume(eVol);
+		winSound.Play();
+		winSound.SetLoop(true);
+			
+	}
 
 
 	int ch;
@@ -560,7 +730,20 @@ bool winner()
 }
 int main()
 {
-
+//Initialize BGM
+	bool music = false;
+	int mVol = 50;
+	sf::Music BGM;
+	if (BGM.OpenFromFile("Sound/BrightMatter.ogg"))
+	{
+		
+		BGM.Play();
+		BGM.SetLoop(true);	
+		music = true;
+		BGM.SetVolume(mVol);
+	}
+	//Initialize Effects
+	loadEffects();
 
 
 	ball BALL;
@@ -583,13 +766,17 @@ int main()
 
     while (1)
     {
+//Simulate a win
+		//bricks.pop_back();	
 
-		
 		drawPlat(&p);
         mvprintw(0, 81, " x is %d, y is %d", BALL.x, BALL.y); 
 		mvprintw(1,81, "LIVES: %d, SCORE %d", lives, score);
 		mvprintw(2,81, "Use the arrow keys to move the platform.");
 		mvprintw(3,81, "Hit Q to quit. Hit B to let the ai take over");	
+		mvprintw(4, 81, "Hit M to Mute the Music, = and - to change volume. Volume is : %d" , mVol);
+		mvprintw(5, 81, "Hit m to Mute the effects, + and _ to change volume. Volume is : %d" , eVol);
+
 
 	    //mvprintw(BALL.y, BALL.x, "%c", BALL.out ); 
 
@@ -628,16 +815,29 @@ int main()
 
 		if (ballOut(&BALL))
 		{
+			sf::Sound boom;
+			if (!effects.empty())
+			{
+				//Set the modulus to be the number of breaking sounds. 
+			
+			
+			boom.SetBuffer(effects[4]);
+			boom.SetVolume(eVol);
+			boom.Play();
+			
+			}
 			mvaddch(BALL.y, BALL.x, BALL.out);
 			timeout(3000);
 			getch();
 			resetBall(&BALL);
 			lives--;
+
 		}
 		else
 		{
 			mvaddch(BALL.y, BALL.x, BALL.out);
 		}
+
 
 	
 		timeout(25); 
@@ -648,9 +848,13 @@ int main()
 		{
 
     		movePlat(&p, ch);
-
+			
 			//usleep(125000);
 	
+		}
+		if (music)
+		{
+			changeVol(&mVol, ch, &BGM);
 		}
 		if ( ch == 'B')
 		{
@@ -667,6 +871,7 @@ int main()
 			break;
 
 		}
+			
 
 
 
@@ -680,6 +885,7 @@ int main()
         refresh();
 	
     }
+	BGM.Stop();
     endwin();         
     return 0;
 }    
