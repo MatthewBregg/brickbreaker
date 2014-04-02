@@ -518,7 +518,7 @@ void brickCollide(std::vector<brick>* bricks, ball* b)
 int ai(ball* b, PLAT* p)
 {
 	int x = p->x + p->out.size()/2;
-	usleep(ballSpeed * 700);
+	usleep(ballSpeed * 700 * ballSpeed/200);
 	if ( x > b->x)
 	{
 		return KEY_LEFT;;
