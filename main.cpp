@@ -274,7 +274,7 @@ void platBallCheck(ball* b, PLAT* p)
 			if (!effects.empty())
 			{
 				//Set the modulus to be the number of breaking sounds. 
-				if ( ballSpeed > 50 )
+				if ( ballSpeed > 60 )
 				{
 					ballSpeed -= log(ballSpeed);	
 				}
@@ -294,7 +294,7 @@ void platBallCheck(ball* b, PLAT* p)
 			{
 				//Set the modulus to be the number of breaking sounds. 
 			
-				if ( ballSpeed > 50 )
+				if ( ballSpeed > 60 )
 				{
 					ballSpeed -= log(ballSpeed);	
 				}
@@ -508,6 +508,8 @@ void brickCollide(std::vector<brick>* bricks, ball* b)
 			
 			bricks->at(j) = bricks->at(bricks->size()-1);
 			bricks->pop_back();
+			brickCollide(bricks, b);
+			break;
 
 			//	moveBall(b);
 			//break;
@@ -595,7 +597,7 @@ sf::Sound gameOver;
 		A = 7;
 	}
 
-	timeout(25); 
+	timeout(15); 
 
 	ch = getch();
 	
