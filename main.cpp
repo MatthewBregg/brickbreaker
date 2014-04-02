@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <time.h>
 #include <string>
+#include <math.h>
 //#include <SDL/SDL_mixer.h>
 #include <SFML/Audio.hpp>
 //http://www.sfml-dev.org/tutorials/2.1/audio-sounds.php
@@ -272,7 +273,7 @@ void platBallCheck(ball* b, PLAT* p)
 			if (!effects.empty())
 			{
 				//Set the modulus to be the number of breaking sounds. 
-			
+			ballSpeed += log(ballSpeed);	
 			sf::Sound collide;
 			collide.SetBuffer(effects[2]);
 			collide.SetVolume(eVol);
@@ -289,6 +290,7 @@ void platBallCheck(ball* b, PLAT* p)
 			{
 				//Set the modulus to be the number of breaking sounds. 
 			
+			ballSpeed += log(ballSpeed);	
 			sf::Sound collide;
 			collide.SetBuffer(effects[2]);
 			collide.SetVolume(eVol);
