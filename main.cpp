@@ -840,9 +840,28 @@ int main()
 
 
 	
+		
+        refresh();
 		timeout(25); 
 		
 		ch = getch();
+
+		if ( ch == 'B')
+		{
+			AI = !AI;
+		}
+		if(AI)
+		{
+		mvprintw(18, 81, "AI activated");
+		movePlat(&p, ai(&BALL, &p));	
+		//refresh();
+		}
+
+		if (ch == 'Q')
+		{
+			break;
+
+		}
 	
 		if ( ch != ERR  && ch != 'B')
 		{
@@ -856,21 +875,7 @@ int main()
 		{
 			changeVol(&mVol, ch, &BGM);
 		}
-		if ( ch == 'B')
-		{
-			AI = !AI;
-		}
-		if(AI)
-		{
-		mvprintw(4, 81, "AI activated");
-		movePlat(&p, ai(&BALL, &p));	
-		}
-
-		if (ch == 'Q')
-		{
-			break;
-
-		}
+		clear();
 			
 
 
@@ -881,8 +886,6 @@ int main()
 
 //		std::this_thread::sleep_for(std::chrono::milliseconds(125));
 
-		clear();
-        refresh();
 	
     }
 	BGM.Stop();
