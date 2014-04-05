@@ -688,7 +688,7 @@ bool winner()
 	init_pair(8, 0, 1);
 
 	
-sf::Sound winSound;
+	sf::Sound winSound;
 	if (!effects.empty())
 	{
 		
@@ -706,36 +706,36 @@ sf::Sound winSound;
 	while(1)
 	{
 
-	attron(COLOR_PAIR(A));
-	mvprintw(maxY/2,maxX/2-15, "GAME WON - HIT N TO RESTART");	
-	attroff(COLOR_PAIR(A));
-	refresh();
-	usleep(100000);
-	if ( A == 7 )
-	{
-		A = 8;
-	}
-	else
-	{
-		A = 7;
-	}
+		attron(COLOR_PAIR(A));
+		mvprintw(maxY/2,maxX/2-15, "GAME WON - HIT N TO RESTART");	
+		attroff(COLOR_PAIR(A));
+		refresh();
+		usleep(100000);
+		if ( A == 7 )
+		{
+			A = 8;
+		}
+		else
+		{
+			A = 7;
+		}
 
-	timeout(25); 
+		timeout(25); 
 
-	ch = getch();
+		ch = getch();
 	
-	if ( ch != ERR  && ch == 'N')
-	{
+		if ( ch != ERR  && ch == 'N')
+		{
 			
 		
-		return true;
+			return true;
 	
 	
-	}
-	if ( ch != ERR && ch == 'Q')
-	{
-		return false;
-	}
+		}
+		if ( ch != ERR && ch == 'Q')
+		{
+			return false;
+		}
 	}
 
 	
