@@ -97,7 +97,7 @@ void loadEffects()
   for (int i = 1; i <= 6; ++i)
     {
       sf::SoundBuffer A;
-      if (A.LoadFromFile("Sound/sound"+std::to_string(i)+".wav"))
+      if (A.loadFromFile("Sound/sound"+std::to_string(i)+".wav"))
 	{
 	  effects.push_back(A);
 	}
@@ -145,9 +145,9 @@ void ballBoundCheck(ball* m)
 	  //Set the modulus to be the number of breaking sounds. 
 			
 	  sf::Sound collide;
-	  collide.SetBuffer(effects[2]);
-	  collide.SetVolume(eVol);
-	  collide.Play();
+	  collide.setBuffer(effects[2]);
+	  collide.setVolume(eVol);
+	  collide.play();
 	  usleep(50000);
 	}
     }
@@ -160,9 +160,9 @@ void ballBoundCheck(ball* m)
 	  //Set the modulus to be the number of breaking sounds. 
 			
 	  sf::Sound collide;
-	  collide.SetBuffer(effects[2]);
-	  collide.SetVolume(eVol);
-	  collide.Play();
+	  collide.setBuffer(effects[2]);
+	  collide.setVolume(eVol);
+	  collide.play();
 	  usleep(50000);
 	}
     }
@@ -175,9 +175,9 @@ void ballBoundCheck(ball* m)
 	  //Set the modulus to be the number of breaking sounds. 
 			
 	  sf::Sound collide;
-	  collide.SetBuffer(effects[2]);
-	  collide.SetVolume(eVol);
-	  collide.Play();
+	  collide.setBuffer(effects[2]);
+	  collide.setVolume(eVol);
+	  collide.play();
 	  usleep(50000);
 	}
     }
@@ -279,9 +279,9 @@ void platBallCheck(ball* b, PLAT* p)
 	      ballSpeed -= log(ballSpeed);	
 	    }
 	  sf::Sound collide;
-	  collide.SetBuffer(effects[2]);
-	  collide.SetVolume(eVol);
-	  collide.Play();
+	  collide.setBuffer(effects[2]);
+	  collide.setVolume(eVol);
+	  collide.play();
 	  usleep(50000);
 	}
     }
@@ -300,9 +300,9 @@ void platBallCheck(ball* b, PLAT* p)
 	    }
 
 	  sf::Sound collide;
-	  collide.SetBuffer(effects[2]);
-	  collide.SetVolume(eVol);
-	  collide.Play();
+	  collide.setBuffer(effects[2]);
+	  collide.setVolume(eVol);
+	  collide.play();
 	  usleep(50000);
 	}
     }
@@ -500,9 +500,9 @@ void brickCollide(std::vector<brick>* bricks, ball* b)
 	      //Set the modulus to be the number of breaking sounds. 
 	      int temp = rand()%2;
 	      sf::Sound collide;
-	      collide.SetBuffer(effects[temp]);
-	      collide.SetVolume(eVol);
-	      collide.Play();
+	      collide.setBuffer(effects[temp]);
+	      collide.setVolume(eVol);
+	      collide.play();
 	      usleep(50000);
 	    }
 			
@@ -570,10 +570,10 @@ bool gameOver()
 		
 			
 		
-      gameOver.SetBuffer(effects[3]);
-      gameOver.SetVolume(eVol);
-      gameOver.Play();
-      gameOver.SetLoop(true);
+      gameOver.setBuffer(effects[3]);
+      gameOver.setVolume(eVol);
+      gameOver.play();
+      gameOver.setLoop(true);
 			
     }
 	
@@ -626,25 +626,25 @@ void changeVol(int* mVol, int ch, sf::Music* BGM)
 	{
 	  if ( *mVol == 0 )
 	    {
-	      BGM->SetVolume(50);
+	      BGM->setVolume(50);
 	      *mVol = 50;
 	    }
 	  else
 	    {
-	      BGM->SetVolume(0);
+	      BGM->setVolume(0);
 	      *mVol = 0;
 	    }
 	}
       if ( ch == '=' && *mVol <= 99)
 	{
 	  ++*mVol;
-	  BGM->SetVolume(*mVol);
+	  BGM->setVolume(*mVol);
 	}
 
       if ( ch == '-' && *mVol > 0)
 	{
 	  --*mVol;
-	  BGM->SetVolume(*mVol);
+	  BGM->setVolume(*mVol);
 	}
 
     }
@@ -694,10 +694,10 @@ bool winner()
 		
 			
 		
-      winSound.SetBuffer(effects[5]);
-      winSound.SetVolume(eVol);
-      winSound.Play();
-      winSound.SetLoop(true);
+      winSound.setBuffer(effects[5]);
+      winSound.setVolume(eVol);
+      winSound.play();
+      winSound.setLoop(true);
 			
     }
 
@@ -746,13 +746,13 @@ int main()
   bool music = false;
   int mVol = 50;
   sf::Music BGM;
-  if (BGM.OpenFromFile("Sound/BrightMatter.ogg"))
+  if (BGM.openFromFile("Sound/BrightMatter.ogg"))
     {
 		
-      BGM.Play();
-      BGM.SetLoop(true);	
+      BGM.play();
+      BGM.setLoop(true);	
       music = true;
-      BGM.SetVolume(mVol);
+      BGM.setVolume(mVol);
     }
   //Initialize Effects
   loadEffects();
@@ -833,9 +833,9 @@ int main()
 	      //Set the modulus to be the number of breaking sounds. 
 			
 			
-	      boom.SetBuffer(effects[4]);
-	      boom.SetVolume(eVol);
-	      boom.Play();
+	      boom.setBuffer(effects[4]);
+	      boom.setVolume(eVol);
+	      boom.play();
 			
 	    }
 	  mvaddch(BALL.y, BALL.x, BALL.out);
@@ -900,7 +900,7 @@ int main()
 
 	
     }
-  BGM.Stop();
+  BGM.stop();
   endwin();         
   return 0;
 }    
